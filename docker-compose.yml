@@ -1,0 +1,50 @@
+services:
+    nginx:
+        image: ghcr.io/krkabol/nginx-noroot-fpmsocket:v0.1
+        container_name: nginx
+        depends_on:
+            - php-fpm
+        ports:
+            - 80:8080
+        volumes:
+            - ./htdocs:/srv
+            - socket:/sock
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        user: 1000:1000
+
+    php-fpm:
+        build:
+            context: .
+        container_name: server
+        depends_on:
+            - mariadb
+        volumes:
+            - ./htdocs:/srv
+            - socket:/sock
+        user: 1000:1000
+
+    mariadb:
+        image: mariadb:10
+        volumes:
+            - db-data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=jacq
+            - MYSQL_USER=jacq
+            - MYSQL_PASSWORD=jacq
+
+    phpmyadmin:
+        image: phpmyadmin
+        links:
+            - mariadb
+        ports:
+            - 8000:80
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mariadb
+            - UPLOAD_LIMIT=100M
+            - MAX_EXECUTION_TIME=6000
+
+volumes:
+    db-data:
+    socket:

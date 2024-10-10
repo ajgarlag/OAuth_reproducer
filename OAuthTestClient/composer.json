@@ -1,0 +1,6 @@
+{
+    "require": {
+        "firebase/php-jwt": "^v6.10.1",
+        "ext-curl": "*"
+    }
+}
