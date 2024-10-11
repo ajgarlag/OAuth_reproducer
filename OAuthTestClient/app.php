@@ -137,7 +137,7 @@ class App
             $jwks = JWK::parseKeySet(json_decode(file_get_contents($this->jwksUri, context: $streamContext), true));
             JWT::$leeway = 10;
             JWT::decode($accessToken, $jwks[1]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $content = 'Error decoding JWT: ' . $e->getMessage();
             $this->render($content);
         }
