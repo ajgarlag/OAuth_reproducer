@@ -18,6 +18,7 @@ class App
     private string $authServer = 'http://localhost/authorize';
     private string $tokenServer = 'http://localhost/token';
     private string $apiUri = 'http://localhost/api/test';
+    private string $jwksUri = 'http://localhost/.well-known/jwks.json';
 
     public function __construct()
     {
